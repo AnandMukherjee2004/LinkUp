@@ -31,7 +31,6 @@ Once you have set up your environment, you can start the application by running 
 
 ![Signup page](/screenshots/signup.png?raw=true "Signup page")
 ![Profile page](/screenshots/profile.png?raw=true "Profile page")
-![Search page](/screenshots/search.png?raw=true "Search page")
 ![Matches page](/screenshots/matches.png?raw=true "Matches page")
 
 
