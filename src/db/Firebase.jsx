@@ -10,6 +10,7 @@ import {
   setPersistence,
   browserSessionPersistence,
 } from "firebase/auth";
+
 import {
   getFirestore,
   doc,
@@ -19,7 +20,11 @@ import {
   collection,
   limit,
   query,
+  addDoc,
 } from "firebase/firestore";
+
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+
 import { createContext, useContext, useEffect, useState } from "react";
 
 const firebaseConfig = {
@@ -38,6 +43,7 @@ export const FirebaseContext = createContext();
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
+const storage = getStorage(app);
 
 export const FireBaseProvider = (props) => {
   const [user, setUser] = useState(null);
@@ -56,6 +62,45 @@ export const FireBaseProvider = (props) => {
         const errorMessage = error.message;
         // ..
       });
+  };
+
+  const registerNewApplier = async (
+    name,
+    education,
+    phoneNumber,
+    resume,
+    portfolio,
+    skills,
+    jobInterests,
+    workExperience,
+    about,
+    gender
+  ) => {
+    const resumeRef = ref(
+      storage,
+      `uploads/resumes/${Date.now()}-${resume.name}`
+    );
+    const uploadedResumePath = await uploadBytes(resumeRef, resume);
+
+    const docRef = doc(firestore, "Appliers", user.uid);
+
+    try {
+      const registeredApplier = await setDoc(docRef, {
+        Full_Name: name,
+        Email: user.email,
+        Education: education,
+        Phone_Number: phoneNumber,
+        Resume: uploadedResumePath.ref.fullPath,
+        Portfolio: portfolio,
+        Skills: skills,
+        Job_Interests: jobInterests,
+        Work_Experience: workExperience,
+        about: about,
+        gender: gender,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const signInUserWithEmailAndPassword = async (email, password) => {
@@ -148,6 +193,7 @@ export const FireBaseProvider = (props) => {
         user,
         // currentApplier,
         getCurrentApplierById,
+        registerNewApplier,
       }}
     >
       {props.children}

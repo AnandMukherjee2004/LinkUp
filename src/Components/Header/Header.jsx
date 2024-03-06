@@ -12,7 +12,7 @@ function Header() {
     <header>
       <div className="container flex h-10 items-center justify-between px-5 py-10 my-2">
         <div>
-          <NavLink to="/profile/1" className={({ isActive }) => {}}>
+          <NavLink to="/profile" className={({ isActive }) => {}}>
             <IconButton>
               <PersonIcon
                 style={{ width: "30px", height: "40px", opacity: "0.65" }}

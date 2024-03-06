@@ -32,7 +32,7 @@ const router = createBrowserRouter(
       <Route path="signin" element={<SignIn />} />
 
       <Route path="" element={<PrivateRoute />}>
-        <Route path="profile/:userid" element={<Profile />} />
+        <Route path="profile" element={<Profile />} />
         <Route path="chats" element={<Chats />} />
         <Route
           path="profile/certifications-form"
