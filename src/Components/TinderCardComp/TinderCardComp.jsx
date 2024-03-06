@@ -86,7 +86,7 @@ function TinderCardComp() {
                     applier.data().gender === "male" ? "male.jpg" : "female.jpg"
                   })`,
                 }}
-                className="card relative bg-white w-[100vw] max-w-[90vw] h-[65vh] rounded-lg bg-cover shadow-2xl"
+                className="card relative bg-white w-[100vw] max-w-[90vw] h-[65vh] rounded-lg bg-cover shadow-lg"
               >
                 <h3 className=" absolute bottom-0 m-3 text-white text-lg font-semibold">
                   {applier.data().Full_Name}
