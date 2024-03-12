@@ -5,6 +5,7 @@ import { Outlet, Route, Router, Routes } from "react-router-dom";
 import TinderCardComp from "./Components/TinderCardComp/TinderCardComp";
 import { FireBaseProvider, useFirebase } from "./db/Firebase";
 import { useLocation } from "react-router-dom";
+import { ChatContextProvider } from "./context/ChatContext";
 
 function Layout({ children }) {
   const location = useLocation();
@@ -21,8 +22,10 @@ function Layout({ children }) {
   return (
     <>
       <FireBaseProvider>
-        {!isLoginPage && <Header />}
-        <Outlet />
+        <ChatContextProvider>
+          {!isLoginPage && <Header />}
+          <Outlet />
+        </ChatContextProvider>
       </FireBaseProvider>
     </>
   );

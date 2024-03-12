@@ -23,20 +23,20 @@ const db = [
   },
 ];
 
-function ChatOne({ name, img }) {
+function ChatOne({ userInfo }) {
   return (
     <div className=" flex items-center ">
       <div
         className=" h-12 w-12 rounded-full flex justify-center items-center bg-orange-200 object-cover"
         style={{
-          backgroundImage: `url(${img})`,
+          // backgroundImage: `url(${userInfo.photoUrl})`,
           backgroundPosition: "center",
         }}
       ></div>
       <div className=" flex justify-between w-[80%] items-center mx-2">
         <div className=" ">
-          <p className=" font-bold ">{name}</p>
-          <p className=" text-xs opacity-75 font-semibold">Recent Chat 😂</p>
+          <p className=" font-bold ">{userInfo?.displayName || "Unknown" }</p>
+          <p className=" text-xs opacity-75 font-semibold">{userInfo?.lastMessage?.text}</p>
         </div>
 
         <div className="right  flex-end text-xs opacity-60 ">

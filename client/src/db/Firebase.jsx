@@ -21,6 +21,7 @@ import {
   limit,
   query,
   addDoc,
+  where,
 } from "firebase/firestore";
 
 import { getStorage, ref, uploadBytes } from "firebase/storage";
@@ -42,8 +43,8 @@ const provider = new GoogleAuthProvider();
 export const FirebaseContext = createContext();
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const firestore = getFirestore(app);
-const storage = getStorage(app);
+export const firestore = getFirestore(app);
+export const storage = getStorage(app);
 
 export const FireBaseProvider = (props) => {
   const [user, setUser] = useState(null);
@@ -131,26 +132,25 @@ export const FireBaseProvider = (props) => {
     return getDocs(collection(firestore, "Appliers"), limit(50));
   };
 
-  // const getCurrentApplier = async () => {
-  //   console.log("Getting current applier...");
-  //   try {
-  //     const applicants = await getAppliers();
+  // list of all authenticated users
 
-  //     if (user) {
-  //       console.log("Logged in User is ", user.uid);
-  //       const applier = applicants.docs.find((applicant) => {
-  //         return applicant.data().Email === user.email;
-  //       });
-  //       console.log("Current applier:", applier.data());
-  //       return applier.data();
-  //     } else {
-  //       console.warn("No User Logged In");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching current applier: ", error.message);
-  //     throw error;
-  //   }
-  // };
+  const UserList = () => {
+    const [allUsers, setAllUsers] = useState([]);
+
+    useEffect(() => {
+      const fetchUsers = async () => {
+        try {
+          const userRecords = await firebase.auth().listUsers();
+          setAllUsers(userRecords.users);
+          console.log(allUsers);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+
+      fetchUsers();
+    }, []);
+  };
 
   const getCurrentApplierById = async (id) => {
     const docRef = doc(firestore, "Appliers", id);
@@ -169,6 +169,23 @@ export const FireBaseProvider = (props) => {
         }
       />
     );
+  };
+
+  // Search User
+
+  const searchUser = async (userName) => {
+    const q = query(
+      collection(firestore, "Appliers"),
+      where("Full_Name", "==", userName)
+    );
+    try {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        return doc.data();
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   useEffect(() => {
@@ -194,6 +211,8 @@ export const FireBaseProvider = (props) => {
         // currentApplier,
         getCurrentApplierById,
         registerNewApplier,
+        UserList,
+        searchUser,
       }}
     >
       {props.children}

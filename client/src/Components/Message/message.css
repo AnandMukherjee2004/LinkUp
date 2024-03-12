@@ -1,0 +1,12 @@
+.owner{
+    flex-direction: row-reverse;
+}
+
+.owner .messageContent p{
+    align-items: flex-end;
+    max-width: max-content;
+    background-color: white;
+    color: black ;
+    border-radius: 10px 0px 10px 10px;
+}
+
